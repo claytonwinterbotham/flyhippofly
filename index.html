@@ -5,7 +5,6 @@
 	<meta name='viewport' content='width=device-width, user-scalable=no' />
 	<title>NitroHippo</title>
 	<style type='text/css'>
-
 		body {
 			touch-action: none;
 			margin: 0;
@@ -34,10 +33,6 @@
 			box-shadow: 0 0 1px 1px #2f2d35;
 		}
 
-
-		/* Status display
-		 * ============== */
-
 		#status {
 			position: absolute;
 			left: 0;
@@ -47,7 +42,6 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			/* don't consume click events - make children visible explicitly */
 			visibility: hidden;
 		}
 
@@ -112,17 +106,18 @@
 			visibility: visible;
 		}
 	</style>
-<link id='-gd-engine-icon' rel='icon' type='image/png' href='.icon.png' />
-<link rel='apple-touch-icon' href='.apple-touch-icon.png'/>
 
+	<link id='-gd-engine-icon' rel='icon' type='image/png' href='icon.png' />
+	<link rel='apple-touch-icon' href='apple-touch-icon.png'/>
 </head>
+
 <body>
 	<canvas id='canvas'>
 		HTML5 canvas appears to be unsupported in the current browser.<br />
 		Please try updating or use a different browser.
 	</canvas>
 	<div id='status'>
-		<div id='status-progress' style='display: none;' oncontextmenu='event.preventDefault();'><div id ='status-progress-inner'></div></div>
+		<div id='status-progress' style='display: none;' oncontextmenu='event.preventDefault();'><div id='status-progress-inner'></div></div>
 		<div id='status-indeterminate' style='display: none;' oncontextmenu='event.preventDefault();'>
 			<div></div>
 			<div></div>
@@ -136,10 +131,23 @@
 		<div id='status-notice' class='godot' style='display: none;'></div>
 	</div>
 
-	<script type='text/javascript' src='.js'></script>
-	<script type='text/javascript'>//<![CDATA[
+	<script type='text/javascript' src='game.js'></script>
+	<script type='text/javascript'>
+		//<![CDATA[
 
-		const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"executable":"","experimentalVK":false,"fileSizes":{".pck":24918672,".wasm":19761972},"focusCanvas":true,"gdnativeLibs":[]};
+		const GODOT_CONFIG = {
+			"args": [],
+			"canvasResizePolicy": 2,
+			"executable": "game", // Base name of your files
+			"experimentalVK": false,
+			"fileSizes": {
+				"game.pck": 24918672, // Correct size of the PCK file
+				"game.wasm": 19761972 // Correct size of the WASM file
+			},
+			"focusCanvas": true,
+			"gdnativeLibs": []
+		};
+
 		var engine = new Engine(GODOT_CONFIG);
 
 		(function() {
@@ -160,9 +168,7 @@
 			requestAnimationFrame(animate);
 
 			function setStatusMode(mode) {
-
-				if (statusMode === mode || !initializing)
-					return;
+				if (statusMode === mode || !initializing) return;
 				[statusProgress, statusIndeterminate, statusNotice].forEach(elem => {
 					elem.style.display = 'none';
 				});
@@ -224,10 +230,9 @@
 				engine.startGame({
 					'onProgress': function (current, total) {
 						if (total > 0) {
-							statusProgressInner.style.width = current/total * 100 + '%';
+							statusProgressInner.style.width = current / total * 100 + '%';
 							setStatusMode('progress');
 							if (current === total) {
-								// wait for progress bar animation
 								setTimeout(() => {
 									setStatusMode('indeterminate');
 								}, 500);
@@ -242,7 +247,7 @@
 				}, displayFailureNotice);
 			}
 		})();
-	//]]></script>
+		//]]>
+	</script>
 </body>
 </html>
-
